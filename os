@@ -641,3 +641,202 @@ printf("\n");
 }
 printf("\nThe number of page faults using LRU are %d",pf);
 }
+
+
+8.......
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_FILES 10
+#define MAX_FILENAME_LENGTH 10
+char directoryName[MAX_FILENAME_LENGTH];
+char filenames[MAX_FILES][MAX_FILENAME_LENGTH];
+int fileCount = 0;
+void createFile() {
+if (fileCount < MAX_FILES) {
+char filename[MAX_FILENAME_LENGTH]; printf("Enter the name of the file: ");
+scanf("%s", filename); strcpy(filenames[fileCount], filename); 
+fileCount++;
+printf("File %s created.\n", filename);
+}
+else {
+printf("Directory is full, cannot create more files.\n");
+}
+}
+void deleteFile() { 
+if (fileCount == 0)
+{
+printf("Directory is empty, nothing to delete.\n"); 
+return;
+}
+char filename[MAX_FILENAME_LENGTH];
+printf("Enter the name of the file to delete: ");
+scanf("%s", filename);
+int found = 0;
+for (int i = 0; i < fileCount; i++) 
+{
+if (strcmp(filename, filenames[i]) == 0) 
+{ found = 1;
+printf("File %s is deleted.\n", filename); 
+strcpy(filenames[i], filenames[fileCount - 1]); 
+fileCount--;
+break;
+}
+}
+if (!found) {
+printf("File %s not found.\n", filename);
+}
+}
+void displayFiles() { 
+if (fileCount == 0) {
+printf("Directory is empty.\n");
+} else
+{
+printf("Files in the directory %s:\n", directoryName); 
+for (int i = 0; i < fileCount; i++) {
+printf("\t%s\n", filenames[i]);
+}
+}
+}
+int main() {
+printf("Enter the name of the directory: "); 
+scanf("%s", directoryName);
+while (1) {
+printf("\n1. Create File\t2. Delete File\t3. Search File\n4. Display Files\t5. Exit\nEnter your choice:"); 
+int choice;
+scanf("%d", &choice); 
+switch (choice) {
+case 1:
+createFile(); 
+break;
+case 2:
+deleteFile(); 
+break;
+case 3:
+printf("Enter the name of the file: ");
+char searchFilename[MAX_FILENAME_LENGTH];
+scanf("%s", searchFilename);
+int found = 0;
+for (int i = 0; i < fileCount; i++) {
+if (strcmp(searchFilename, filenames[i]) == 0) 
+{ found = 1;
+printf("File %s is found.\n", searchFilename); 
+break;
+}
+}
+if (!found) {
+printf("File %s not found.\n", searchFilename);
+}
+break; 
+case 4:
+displayFiles();
+break;
+case 5:
+exit(0); 
+default:
+printf("Invalid choice, please try again.\n");
+}
+}
+return 0;
+}
+
+
+9......
+#include <stdio.h> 
+#include <stdlib.h> 
+int main(){
+int f[50], p, i, st, len, j, c, k, a, fn=0;
+for (i = 0; i < 50; i++) f[i] = 0;
+/* printf("Enter how many blocks already allocated: "); 
+scanf("%d", &p);
+printf("Enter blocks already allocated: ");
+for (i = 0; i < p; i++) {
+scanf("%d", &a);
+f[a] = 1;
+}*/
+x:
+fn=fn+1;
+printf("Enter index starting block and length: "); 
+scanf("%d%d", &st, &len);
+k = len;
+if (f[st] == 0)
+{
+for (j = st; j < (st + k); j++)
+{ 
+if (f[j] == 0)
+{
+f[j] = fn;
+printf("%d ------ >%d\n", j, f[j]);
+}
+else{
+printf("%d Block is already allocated \n", j);
+k++;
+}
+}
+}
+else
+printf("%d starting block is already allocated \n", st);
+printf("Do you want to enter more file(Yes - 1/No - 0)");
+scanf("%d", &c);
+if (c == 1)
+goto x;
+else
+exit(0); 
+return 0;
+}
+
+10......
+#include<stdio.h>
+int main()
+{
+int t[20], d[20], h, i, j, n, temp, k, atr[20], tot, p, sum=0;
+printf("enter the no of tracks to be traveresed"); 
+scanf("%d'",&n);
+printf("enter the position of head"); 
+scanf("%d",&h);
+t[0]=0;
+t[1]=h;
+printf("enter the tracks"); 
+for(i=2;i<n+2;i++) 
+scanf("%d",&t[i]);
+for(i=0;i<n+2;i++)
+{
+for(j=0;j<(n+2)-i-1;j++)
+{
+if(t[j]>t[j+1])
+{
+temp=t[j];
+t[j]=t[j+1]; 
+t[j+1]=temp;
+}
+}
+}
+for(i=0;i<n+2;i++)
+if(t[i]==h)
+{
+j=i; 
+k=i;
+p=0;
+}
+while(t[j]!=0)
+{
+atr[p]=t[j];
+j--;
+p++;
+}
+atr[p]=t[j];
+for(p=k+1;p<n+2;p++,k++)
+atr[p]=t[k+1];
+printf("seek sequence is:");
+for(j=0;j<n+1;j++)
+{
+if(atr[j]>atr[j+1])
+d[j]=atr[j]-atr[j+1]; 
+else
+d[j]=atr[j+1]-atr[j]; 
+sum+=d[j]; 
+printf("\n%d", atr[j]);
+}
+printf("\nTotal head movements:%d",sum);
+}
